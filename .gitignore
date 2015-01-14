@@ -1,7 +1,8 @@
-
 *.pyc
 
 local*.cfg
 
 build/
-python_bitcoinlib.egg-info/
+dist/
+.idea/
+python_reddcoinlib.egg-info/
