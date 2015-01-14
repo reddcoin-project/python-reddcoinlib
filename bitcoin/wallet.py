@@ -22,26 +22,26 @@ _bord = ord
 if sys.version > '3':
     _bord = lambda x: x
 
-import reddcoin
-import reddcoin.base58
 import reddcoin.core
 import reddcoin.core.key
 import reddcoin.core.script as script
+from . import params, base58
 
-class CBitcoinAddressError(reddcoin.base58.Base58Error):
+
+class CBitcoinAddressError(base58.Base58Error):
     """Raised when an invalid Bitcoin address is encountered"""
 
-class CBitcoinAddress(reddcoin.base58.CBase58Data):
+class CBitcoinAddress(base58.CBase58Data):
     """A Bitcoin address"""
 
     @classmethod
     def from_bytes(cls, data, nVersion):
         self = super(CBitcoinAddress, cls).from_bytes(data, nVersion)
 
-        if nVersion == reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR']:
+        if nVersion == params.BASE58_PREFIXES['SCRIPT_ADDR']:
             self.__class__ = P2SHBitcoinAddress
 
-        elif nVersion == reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR']:
+        elif nVersion == params.BASE58_PREFIXES['PUBKEY_ADDR']:
             self.__class__ = P2PKHBitcoinAddress
 
         else:
@@ -77,11 +77,11 @@ class P2SHBitcoinAddress(CBitcoinAddress):
     @classmethod
     def from_bytes(cls, data, nVersion=None):
         if nVersion is None:
-            nVersion = reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR']
+            nVersion = params.BASE58_PREFIXES['SCRIPT_ADDR']
 
-        elif nVersion != reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR']:
+        elif nVersion != params.BASE58_PREFIXES['SCRIPT_ADDR']:
             raise ValueError('nVersion incorrect for P2SH address: got %d; expected %d' % \
-                                (nVersion, reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR']))
+                                (nVersion, params.BASE58_PREFIXES['SCRIPT_ADDR']))
 
         return super(P2SHBitcoinAddress, cls).from_bytes(data, nVersion)
 
@@ -101,25 +101,25 @@ class P2SHBitcoinAddress(CBitcoinAddress):
         form.
         """
         if scriptPubKey.is_p2sh():
-            return cls.from_bytes(scriptPubKey[2:22], reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR'])
+            return cls.from_bytes(scriptPubKey[2:22], params.BASE58_PREFIXES['SCRIPT_ADDR'])
 
         else:
             raise CBitcoinAddressError('not a P2SH scriptPubKey')
 
     def to_scriptPubKey(self):
         """Convert an address to a scriptPubKey"""
-        assert self.nVersion == reddcoin.params.BASE58_PREFIXES['SCRIPT_ADDR']
+        assert self.nVersion == params.BASE58_PREFIXES['SCRIPT_ADDR']
         return script.CScript([script.OP_HASH160, self, script.OP_EQUAL])
 
 class P2PKHBitcoinAddress(CBitcoinAddress):
     @classmethod
     def from_bytes(cls, data, nVersion=None):
         if nVersion is None:
-            nVersion = reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR']
+            nVersion = params.BASE58_PREFIXES['PUBKEY_ADDR']
 
-        elif nVersion != reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR']:
+        elif nVersion != params.BASE58_PREFIXES['PUBKEY_ADDR']:
             raise ValueError('nVersion incorrect for P2PKH address: got %d; expected %d' % \
-                                (nVersion, reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR']))
+                                (nVersion, params.BASE58_PREFIXES['PUBKEY_ADDR']))
 
         return super(P2PKHBitcoinAddress, cls).from_bytes(data, nVersion)
 
@@ -169,7 +169,7 @@ class P2PKHBitcoinAddress(CBitcoinAddress):
                 and _bord(scriptPubKey[2])  == 0x14
                 and _bord(scriptPubKey[23]) == script.OP_EQUALVERIFY
                 and _bord(scriptPubKey[24]) == script.OP_CHECKSIG):
-            return cls.from_bytes(scriptPubKey[3:23], reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR'])
+            return cls.from_bytes(scriptPubKey[3:23], params.BASE58_PREFIXES['PUBKEY_ADDR'])
 
         elif accept_bare_checksig:
             pubkey = None
@@ -195,7 +195,7 @@ class P2PKHBitcoinAddress(CBitcoinAddress):
 
     def to_scriptPubKey(self):
         """Convert an address to a scriptPubKey"""
-        assert self.nVersion == reddcoin.params.BASE58_PREFIXES['PUBKEY_ADDR']
+        assert self.nVersion == params.BASE58_PREFIXES['PUBKEY_ADDR']
         return script.CScript([script.OP_DUP, script.OP_HASH160, self, script.OP_EQUALVERIFY, script.OP_CHECKSIG])
 
 class CKey(object):
@@ -222,24 +222,24 @@ class CKey(object):
         return self._cec_key.sign(hash)
 
 
-class CBitcoinSecretError(reddcoin.base58.Base58Error):
+class CBitcoinSecretError(base58.Base58Error):
     pass
 
-class CBitcoinSecret(reddcoin.base58.CBase58Data, CKey):
+class CBitcoinSecret(base58.CBase58Data, CKey):
     """A base58-encoded secret key"""
 
     @classmethod
     def from_secret_bytes(cls, secret, compressed=True):
         """Create a secret key from a 32-byte secret"""
         self = cls.from_bytes(secret + (b'\x01' if compressed else b''),
-                              reddcoin.params.BASE58_PREFIXES['SECRET_KEY'])
+                              params.BASE58_PREFIXES['SECRET_KEY'])
         self.__init__(None)
         return self
 
     def __init__(self, s):
-        if self.nVersion != reddcoin.params.BASE58_PREFIXES['SECRET_KEY']:
+        if self.nVersion != params.BASE58_PREFIXES['SECRET_KEY']:
             raise CBitcoinSecretError('Not a base58-encoded secret key: got nVersion=%d; expected nVersion=%d' % \
-                                      (self.nVersion, reddcoin.params.BASE58_PREFIXES['SECRET_KEY']))
+                                      (self.nVersion, params.BASE58_PREFIXES['SECRET_KEY']))
 
         CKey.__init__(self, self[0:32], len(self) > 32 and _bord(self[32]) == 1)
 

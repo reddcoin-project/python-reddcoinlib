@@ -32,8 +32,8 @@ else:
 # later.
 from reddcoin.core import *
 from reddcoin.core.serialize import *
-from reddcoin.net import *
-import reddcoin
+from .net import *
+from . import params
 
 MSG_TX = 1
 MSG_BLOCK = 2
@@ -55,7 +55,7 @@ class MsgSerializable(Serializable):
         f = _BytesIO()
         self.msg_ser(f)
         body = f.getvalue()
-        res = reddcoin.params.MESSAGE_START
+        res = params.MESSAGE_START
         res += self.command
         res += b"\x00" * (12 - len(self.command))
         res += struct.pack(b"<I", len(body))
@@ -78,9 +78,9 @@ class MsgSerializable(Serializable):
         recvbuf = ser_read(f, 4 + 12 + 4 + 4)
 
         # check magic
-        if recvbuf[:4] != reddcoin.params.MESSAGE_START:
+        if recvbuf[:4] != params.MESSAGE_START:
             raise ValueError("Invalid message start '%s', expected '%s'" %
-                             (b2x(recvbuf[:4]), b2x(reddcoin.params.MESSAGE_START)))
+                             (b2x(recvbuf[:4]), b2x(params.MESSAGE_START)))
 
         # remaining header fields: command, msg length, checksum
         command = recvbuf[4:4+12].split(b"\x00", 1)[0]

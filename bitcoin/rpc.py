@@ -30,10 +30,10 @@ try:
 except ImportError:
     import urlparse
 
-import reddcoin
 from reddcoin.core import COIN, lx, b2lx, CBlock, CTransaction, COutPoint, CTxOut
 from reddcoin.core.script import CScript
 from reddcoin.wallet import CBitcoinAddress, CBitcoinSecret
+from . import params
 
 DEFAULT_USER_AGENT = "AuthServiceProxy/0.1"
 
@@ -89,7 +89,7 @@ class RawProxy(object):
                     conf[k.strip()] = v.strip()
 
                 if service_port is None:
-                    service_port = reddcoin.params.RPC_PORT
+                    service_port = params.RPC_PORT
                 conf['rpcport'] = int(conf.get('rpcport', service_port))
                 conf['rpcssl'] = conf.get('rpcssl', '0')
 
