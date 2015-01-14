@@ -22,7 +22,7 @@ from reddcoin.core.serialize import (
 )
 from reddcoin.core import b2lx
 
-PROTO_VERSION = 60002
+PROTO_VERSION = 80000
 CADDR_TIME_VERSION = 31402
 
 class CAddress(Serializable):

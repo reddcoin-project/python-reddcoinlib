@@ -10,7 +10,7 @@
 # propagated, or distributed except according to the terms contained in the
 # LICENSE file.
 
-"""Bitcoin Core RPC support"""
+"""Reddcoin Core RPC support"""
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -197,7 +197,7 @@ class Proxy(RawProxy):
                        btc_conf_file=None,
                        timeout=DEFAULT_HTTP_TIMEOUT,
                        **kwargs):
-        """Create a proxy to a bitcoin RPC service
+        """Create a proxy to a Reddcoin RPC service
 
         Unlike RawProxy data is passed as objects, rather than JSON. (not yet
         fully implemented) Assumes Bitcoin Core version >= 0.9; older versions
@@ -205,11 +205,11 @@ class Proxy(RawProxy):
 
         If service_url is not specified the username and password are read out
         of the file btc_conf_file. If btc_conf_file is not specified
-        ~/.bitcoin/reddcoin.conf or equivalent is used by default. The default
+        ~/.reddcoin/reddcoin.conf or equivalent is used by default. The default
         port is set according to the chain parameters in use: mainnet, testnet,
         or regtest.
 
-        Usually no arguments to Proxy() are needed; the local bitcoind will be
+        Usually no arguments to Proxy() are needed; the local reddcoind will be
         used.
 
         timeout - timeout in seconds before the HTTP interface times out
@@ -450,7 +450,7 @@ class Proxy(RawProxy):
     def submitblock(self, block, params=None):
         """Submit a new block to the network.
 
-        params is optional and is currently ignored by bitcoind. See
+        params is optional and is currently ignored by reddcoind. See
         https://en.bitcoin.it/wiki/BIP_0022 for full specification.
         """
         hexblock = hexlify(block.serialize())

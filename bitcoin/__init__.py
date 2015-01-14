@@ -13,18 +13,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import reddcoin.core
 
+
 class MainParams(reddcoin.core.CoreChainParams):
-    MESSAGE_START = b'\xf9\xbe\xb4\xd9'
-    DEFAULT_PORT = 8333
-    RPC_PORT = 8332
-    DNS_SEEDS = (('bitcoin.sipa.be', 'seed.bitcoin.sipa.be'),
-                 ('bluematt.me', 'dnsseed.bluematt.me'),
-                 ('dashjr.org', 'dnsseed.bitcoin.dashjr.org'),
-                 ('bitcoinstats.com', 'seed.bitcoinstats.com'),
-                 ('xf2.org', 'bitseed.xf2.org'))
-    BASE58_PREFIXES = {'PUBKEY_ADDR':0,
-                       'SCRIPT_ADDR':5,
-                       'SECRET_KEY' :128}
+    MESSAGE_START = b'\xfb\xc0\xb6\xdb'
+    DEFAULT_PORT = 45444
+    RPC_PORT = 45443
+    DNS_SEEDS = (('reddcoin.com', 'seed.reddcoin.com'))
+    BASE58_PREFIXES = {'PUBKEY_ADDR': 61,
+                       'SCRIPT_ADDR': 5,
+                       'SECRET_KEY': 189}
+
 
 class TestNetParams(reddcoin.core.CoreTestNetParams):
     MESSAGE_START = b'\x0b\x11\x09\x07'
