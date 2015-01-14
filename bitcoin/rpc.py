@@ -30,10 +30,10 @@ try:
 except ImportError:
     import urlparse
 
-import bitcoin
-from bitcoin.core import COIN, lx, b2lx, CBlock, CTransaction, COutPoint, CTxOut
-from bitcoin.core.script import CScript
-from bitcoin.wallet import CBitcoinAddress, CBitcoinSecret
+import reddcoin
+from reddcoin.core import COIN, lx, b2lx, CBlock, CTransaction, COutPoint, CTxOut
+from reddcoin.core.script import CScript
+from reddcoin.wallet import CBitcoinAddress, CBitcoinSecret
 
 DEFAULT_USER_AGENT = "AuthServiceProxy/0.1"
 
@@ -66,19 +66,19 @@ class RawProxy(object):
         """
 
         if service_url is None:
-            # Figure out the path to the bitcoin.conf file
+            # Figure out the path to the reddcoin.conf file
             if btc_conf_file is None:
                 if platform.system() == 'Darwin':
-                    btc_conf_file = os.path.expanduser('~/Library/Application Support/Bitcoin/')
+                    btc_conf_file = os.path.expanduser('~/Library/Application Support/Reddcoin/')
                 elif platform.system() == 'Windows':
-                    btc_conf_file = os.path.join(os.environ['APPDATA'], 'Bitcoin')
+                    btc_conf_file = os.path.join(os.environ['APPDATA'], 'Reddcoin')
                 else:
-                    btc_conf_file = os.path.expanduser('~/.bitcoin')
-                btc_conf_file = os.path.join(btc_conf_file, 'bitcoin.conf')
+                    btc_conf_file = os.path.expanduser('~/.reddcoin')
+                btc_conf_file = os.path.join(btc_conf_file, 'reddcoin.conf')
 
-            # Extract contents of bitcoin.conf to build service_url
+            # Extract contents of reddcoin.conf to build service_url
             with open(btc_conf_file, 'r') as fd:
-                # Bitcoin Core accepts empty rpcuser, not specified in btc_conf_file
+                # Reddcoin Core accepts empty rpcuser, not specified in btc_conf_file
                 conf = {'rpcuser': ""}
                 for line in fd.readlines():
                     if '#' in line:
@@ -89,7 +89,7 @@ class RawProxy(object):
                     conf[k.strip()] = v.strip()
 
                 if service_port is None:
-                    service_port = bitcoin.params.RPC_PORT
+                    service_port = reddcoin.params.RPC_PORT
                 conf['rpcport'] = int(conf.get('rpcport', service_port))
                 conf['rpcssl'] = conf.get('rpcssl', '0')
 
@@ -165,8 +165,8 @@ class RawProxy(object):
         # Create a callable to do the actual call
         f = lambda *args: self._call(name, *args)
 
-        # Make debuggers show <function bitcoin.rpc.name> rather than <function
-        # bitcoin.rpc.<lambda>>
+        # Make debuggers show <function reddcoin.rpc.name> rather than <function
+        # reddcoin.rpc.<lambda>>
         f.__name__ = name
         return f
 
@@ -205,7 +205,7 @@ class Proxy(RawProxy):
 
         If service_url is not specified the username and password are read out
         of the file btc_conf_file. If btc_conf_file is not specified
-        ~/.bitcoin/bitcoin.conf or equivalent is used by default. The default
+        ~/.bitcoin/reddcoin.conf or equivalent is used by default. The default
         port is set according to the chain parameters in use: mainnet, testnet,
         or regtest.
 

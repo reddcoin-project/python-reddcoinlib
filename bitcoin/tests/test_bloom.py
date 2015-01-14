@@ -15,9 +15,9 @@ import json
 import os
 import unittest
 
-import bitcoin.core
-from bitcoin.core import x
-from bitcoin.bloom import *
+import reddcoin.core
+from reddcoin.core import x
+from reddcoin.bloom import *
 
 class Test_MurmurHash3(unittest.TestCase):
     def test(self):
@@ -90,7 +90,7 @@ class Test_CBloomFilter(unittest.TestCase):
         filter = CBloomFilter(2, 0.001, 0, CBloomFilter.UPDATE_ALL)
 
         pubkey = x('045B81F0017E2091E2EDCD5EECF10D5BDD120A5514CB3EE65B8447EC18BFC4575C6D5BF415E54E03B1067934A0F0BA76B01C6B9AB227142EE1D543764B69D901E0')
-        pubkeyhash = bitcoin.core.Hash160(pubkey)
+        pubkeyhash = reddcoin.core.Hash160(pubkey)
 
         filter.insert(pubkey)
         filter.insert(pubkeyhash)

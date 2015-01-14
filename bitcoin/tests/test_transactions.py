@@ -15,8 +15,8 @@ import json
 import unittest
 import os
 
-from bitcoin.core import *
-from bitcoin.core.scripteval import VerifyScript, SCRIPT_VERIFY_P2SH
+from reddcoin.core import *
+from reddcoin.core.scripteval import VerifyScript, SCRIPT_VERIFY_P2SH
 
 from bitcoin.tests.test_scripteval import parse_script
 

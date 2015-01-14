@@ -13,10 +13,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import unittest
 
-from bitcoin.core import b2x, x
-from bitcoin.core.script import CScript
-from bitcoin.core.key import CPubKey
-from bitcoin.wallet import *
+from reddcoin.core import b2x, x
+from reddcoin.core.script import CScript
+from reddcoin.core.key import CPubKey
+from reddcoin.wallet import *
 
 class Test_CBitcoinAddress(unittest.TestCase):
     def test_create_from_string(self):

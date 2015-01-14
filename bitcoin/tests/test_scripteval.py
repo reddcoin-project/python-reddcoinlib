@@ -21,9 +21,9 @@ if sys.version > '3':
 
 from binascii import unhexlify
 
-from bitcoin.core import ValidationError
-from bitcoin.core.script import *
-from bitcoin.core.scripteval import *
+from reddcoin.core import ValidationError
+from reddcoin.core.script import *
+from reddcoin.core.scripteval import *
 
 def parse_script(s):
     def ishex(s):

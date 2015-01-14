@@ -11,9 +11,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import bitcoin.core
+import reddcoin.core
 
-class MainParams(bitcoin.core.CoreChainParams):
+class MainParams(reddcoin.core.CoreChainParams):
     MESSAGE_START = b'\xf9\xbe\xb4\xd9'
     DEFAULT_PORT = 8333
     RPC_PORT = 8332
@@ -26,7 +26,7 @@ class MainParams(bitcoin.core.CoreChainParams):
                        'SCRIPT_ADDR':5,
                        'SECRET_KEY' :128}
 
-class TestNetParams(bitcoin.core.CoreTestNetParams):
+class TestNetParams(reddcoin.core.CoreTestNetParams):
     MESSAGE_START = b'\x0b\x11\x09\x07'
     DEFAULT_PORT = 18333
     RPC_PORT = 18332
@@ -36,7 +36,7 @@ class TestNetParams(bitcoin.core.CoreTestNetParams):
                        'SCRIPT_ADDR':196,
                        'SECRET_KEY' :239}
 
-class RegTestParams(bitcoin.core.CoreRegTestParams):
+class RegTestParams(reddcoin.core.CoreRegTestParams):
     MESSAGE_START = b'\xfa\xbf\xb5\xda'
     DEFAULT_PORT = 18444
     RPC_PORT = 18332
@@ -48,9 +48,9 @@ class RegTestParams(bitcoin.core.CoreRegTestParams):
 """Master global setting for what chain params we're using.
 
 However, don't set this directly, use SelectParams() instead so as to set the
-bitcoin.core.params correctly too.
+reddcoin.core.params correctly too.
 """
-#params = bitcoin.core.coreparams = MainParams()
+#params = reddcoin.core.coreparams = MainParams()
 params = MainParams()
 
 def SelectParams(name):
@@ -61,12 +61,12 @@ def SelectParams(name):
     Default chain is 'mainnet'
     """
     global params
-    bitcoin.core._SelectCoreParams(name)
+    reddcoin.core._SelectCoreParams(name)
     if name == 'mainnet':
-        params = bitcoin.core.coreparams = MainParams()
+        params = reddcoin.core.coreparams = MainParams()
     elif name == 'testnet':
-        params = bitcoin.core.coreparams = TestNetParams()
+        params = reddcoin.core.coreparams = TestNetParams()
     elif name == 'regtest':
-        params = bitcoin.core.coreparams = RegTestParams()
+        params = reddcoin.core.coreparams = RegTestParams()
     else:
         raise ValueError('Unknown chain %r' % name)

@@ -14,13 +14,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import struct
 import socket
 
-from bitcoin.core.serialize import (
+from reddcoin.core.serialize import (
         Serializable,
         VarStringSerializer,
         ser_read,
         uint256VectorSerializer,
 )
-from bitcoin.core import b2lx
+from reddcoin.core import b2lx
 
 PROTO_VERSION = 60002
 CADDR_TIME_VERSION = 31402

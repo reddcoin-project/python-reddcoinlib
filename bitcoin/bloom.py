@@ -17,8 +17,8 @@ import struct
 import sys
 import math
 
-import bitcoin.core
-import bitcoin.core.serialize
+import reddcoin.core
+import reddcoin.core.serialize
 
 def _ROTL32(x, r):
     assert x <= 0xFFFFFFFF
@@ -85,7 +85,7 @@ def MurmurHash3(nHashSeed, vDataToHash):
     return h1 & 0xFFFFFFFF
 
 
-class CBloomFilter(bitcoin.core.serialize.Serializable):
+class CBloomFilter(reddcoin.core.serialize.Serializable):
     # 20,000 items with fp rate < 0.1% or 10,000 items and <0.0001%
     MAX_BLOOM_FILTER_SIZE = 36000
     MAX_HASH_FUNCS = 50
@@ -128,7 +128,7 @@ class CBloomFilter(bitcoin.core.serialize.Serializable):
 
         elem may be a COutPoint or bytes
         """
-        if isinstance(elem, bitcoin.core.COutPoint):
+        if isinstance(elem, reddcoin.core.COutPoint):
             elem = elem.serialize()
 
         if len(self.vData) == 1 and self.vData[0] == 0xff:
@@ -144,7 +144,7 @@ class CBloomFilter(bitcoin.core.serialize.Serializable):
 
         elem may be a COutPoint or bytes
         """
-        if isinstance(elem, bitcoin.core.COutPoint):
+        if isinstance(elem, reddcoin.core.COutPoint):
             elem = elem.serialize()
 
         if len(self.vData) == 1 and self.vData[0] == 0xff:
@@ -166,7 +166,7 @@ class CBloomFilter(bitcoin.core.serialize.Serializable):
     __struct = struct.Struct(b'<IIB')
     @classmethod
     def stream_deserialize(cls, f):
-        vData = bitcoin.core.serialize.BytesSerializer.stream_deserialize(f)
+        vData = reddcoin.core.serialize.BytesSerializer.stream_deserialize(f)
         (nHashFuncs,
          nTweak,
          nFlags) = self.__struct.unpack(_ser_read(f, self.__struct.size))
@@ -179,10 +179,10 @@ class CBloomFilter(bitcoin.core.serialize.Serializable):
 
     def stream_serialize(self, f):
         if sys.version > '3':
-            bitcoin.core.serialize.BytesSerializer.stream_serialize(self.vData, f)
+            reddcoin.core.serialize.BytesSerializer.stream_serialize(self.vData, f)
         else:
             # 2.7 has problems with f.write(bytearray())
-            bitcoin.core.serialize.BytesSerializer.stream_serialize(bytes(self.vData), f)
+            reddcoin.core.serialize.BytesSerializer.stream_serialize(bytes(self.vData), f)
         f.write(self.__struct.pack(self.nHashFuncs, self.nTweak, self.nFlags))
 
 __all__ = (

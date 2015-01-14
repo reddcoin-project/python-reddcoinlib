@@ -13,8 +13,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import unittest
 
-from bitcoin.core.key import *
-from bitcoin.core import x, b2x
+from reddcoin.core.key import *
+from reddcoin.core import x, b2x
 
 class Test_CPubKey(unittest.TestCase):
     def test(self):

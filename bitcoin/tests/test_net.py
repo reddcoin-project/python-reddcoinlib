@@ -11,7 +11,7 @@
 
 import unittest
 
-from bitcoin.net import CAddress
+from reddcoin.net import CAddress
 
 class Test_CAddress(unittest.TestCase):
     def test_serialization(self):
